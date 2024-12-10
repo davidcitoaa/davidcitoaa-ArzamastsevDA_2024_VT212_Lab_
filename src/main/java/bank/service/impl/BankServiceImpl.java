@@ -70,7 +70,8 @@ public class BankServiceImpl implements BankService {
      * Удаление банкомата.
      */
     public void removeAtm() {
-        this.bank.atmCount--;
+        if (bank.atmCount > 0)
+            this.bank.atmCount--;
     }
 
 }

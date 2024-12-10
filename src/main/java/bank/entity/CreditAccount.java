@@ -33,13 +33,13 @@ public class CreditAccount {
     }
 
     // Метод для расчета ежемесячного платежа
-    private double calculateMonthlyPayment() {
-        if (durationMonths == 0) {
-            return 0;
+        private double calculateMonthlyPayment() {
+            if (durationMonths == 0) {
+                return 0;
+            }
+            double monthlyRate = interestRate / 100 / 12; // Перевод процентной ставки в месячную
+            return (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -durationMonths));
         }
-        double monthlyRate = interestRate / 100 / 12; // Перевод процентной ставки в месячную
-        return (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -durationMonths));
-    }
 
     // Геттеры для полей
     public String getId() {
