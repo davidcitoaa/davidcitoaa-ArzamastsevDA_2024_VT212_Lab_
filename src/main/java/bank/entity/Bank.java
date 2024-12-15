@@ -1,14 +1,26 @@
 package bank.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+import lombok.ToString;
+
+@ToString
+@Data // Создает геттеры и сеттеры для всех полей + toString, equals, hashCode и другие
+@NoArgsConstructor // Генерирует конструктор без параметров
+@AllArgsConstructor // Генерирует конструктор со всеми параметрами
 public class Bank {
     private String id; // Идентификатор банка
     private String name; // Имя банка
-    public int officeCount = 0; // Кол-во офисов
-    public int atmCount = 0; // Кол-во банкоматов
-    public int employeeCount = 0; // Кол-во сотрудников
-    public int clientCount = 0; // Кол-во клиентов
+    public int officeCount; // Кол-во офисов
+    public int atmCount; // Кол-во банкоматов
+    private int employeeCount; // Кол-во сотрудников
+    public int clientCount; // Кол-во клиентов
     private int rating; // Рейтинг банка
     private double totalMoney; // Всего денег в банке
     private double interestRate; // Процентная ставка
@@ -41,55 +53,6 @@ public class Bank {
     }
 
 
-    // Геттеры для полей
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getOfficeCount() {
-        return officeCount;
-    }
-
-    public int getAtmCount() {
-        return atmCount;
-    }
-
-    public int getEmployeeCount() {
-        return employeeCount;
-    }
-
-    public int getClientCount() {
-        return clientCount;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public double getTotalMoney() {
-        return totalMoney;
-    }
-
-    public double getInterestRate() {
-        return interestRate;
-    }
-    //Переопределение метода toString()
-    @Override
-    public String toString() {
-        return "Bank{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", officeCount=" + officeCount +
-                ", atmCount=" + atmCount +
-                ", employeeCount=" + employeeCount +
-                ", clientCount=" + clientCount +
-                ", rating=" + rating +
-                ", totalMoney=" + totalMoney +
-                ", interestRate=" + interestRate +
-                '}';
-    }
+    @Getter
+    private List<BankOffice> offices = new ArrayList<>();
 }
