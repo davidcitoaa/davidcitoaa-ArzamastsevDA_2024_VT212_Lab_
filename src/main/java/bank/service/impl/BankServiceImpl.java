@@ -12,31 +12,30 @@ public class BankServiceImpl implements BankService {
      * Создание нового банка.
      */
 
-    public void create(Bank newUser) {
-        this.bank = newUser;
+    public void create(Bank newBank) {
+        this.bank = newBank;
     }
 
     /**
      * Чтение данных банка.
      *
      * @param id Идентификатор банка
+     * @return Возвращает объект Bank или null, если банк не найден.
      */
 
     public Bank read(String id) {
-        if (this.bank != null && this.bank.getId() == id) {
-            return bank;
-        } else {
-            return null;
-        }
+        return (this.bank != null && this.bank.getId().equals(id)) ? bank : null;
     }
 
     /**
      * Обновление данных банка.
+     *
+     * @param newBank Новый объект банка для замены.
      */
 
-    public void update(Bank newUser) {
-        if (this.bank != null && this.bank.getId() == newUser.getId()) {
-            this.bank = newUser;
+    public void update(Bank newBank) {
+        if (this.bank != null && this.bank.getId().equals(newBank.getId())) {
+            this.bank = newBank;
         }
     }
 
@@ -47,7 +46,7 @@ public class BankServiceImpl implements BankService {
      */
 
     public void delete(String id) {
-        if (this.bank != null && this.bank.getId() == id) {
+        if (this.bank != null && this.bank.getId().equals(id)) {
             this.bank = null;
         }
     }
@@ -56,22 +55,27 @@ public class BankServiceImpl implements BankService {
      * Добавление офиса.
      */
     public void addOffice() {
-        this.bank.officeCount++;
+        if (this.bank != null) {
+            this.bank.setOfficeCount(this.bank.getOfficeCount() + 1);
+        }
     }
 
     /**
      * Добавление банкомата.
      */
     public void addAtm() {
-        this.bank.atmCount++;
+        if (this.bank != null) {
+            this.bank.setAtmCount(this.bank.getAtmCount() + 1);
+        }
     }
 
     /**
      * Удаление банкомата.
      */
     public void removeAtm() {
-        if (bank.atmCount > 0)
-            this.bank.atmCount--;
+        if (this.bank != null) {
+            this.bank.setAtmCount(this.bank.getAtmCount() - 1);
+        }
     }
 
 }

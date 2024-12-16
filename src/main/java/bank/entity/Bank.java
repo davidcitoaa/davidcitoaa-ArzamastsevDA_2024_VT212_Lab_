@@ -17,15 +17,20 @@ import lombok.ToString;
 public class Bank {
     private String id; // Идентификатор банка
     private String name; // Имя банка
-    public int officeCount; // Кол-во офисов
-    public int atmCount; // Кол-во банкоматов
+    private int officeCount; // Кол-во офисов
+    private int atmCount; // Кол-во банкоматов
     private int employeeCount; // Кол-во сотрудников
-    public int clientCount; // Кол-во клиентов
+    private int clientCount; // Кол-во клиентов
     private int rating; // Рейтинг банка
     private double totalMoney; // Всего денег в банке
     private double interestRate; // Процентная ставка
 
     private static final Random random = new Random();
+
+    // Храним офисы в списке
+    @Getter
+    private List<BankOffice> offices = new ArrayList<>();
+
 
     public Bank(String id, String name) {
         this.id = id;
@@ -33,6 +38,12 @@ public class Bank {
         this.rating = generateRating();
         this.totalMoney = generateTotalMoney();
         this.interestRate = generateInterestRate(rating);
+    }
+
+    // Методы для работы с офисами
+    public void setOffices(List<BankOffice> offices) {
+        this.offices = offices;
+        this.officeCount = offices.size(); // Обновляем количество офисов
     }
 
     // Генерация рейтинга банка от 0 до 100
@@ -52,7 +63,4 @@ public class Bank {
         return baseRate * (1 - rating / 100.0);
     }
 
-
-    @Getter
-    private List<BankOffice> offices = new ArrayList<>();
 }
