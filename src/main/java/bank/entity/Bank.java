@@ -29,6 +29,7 @@ public class Bank {
 
     // Храним офисы в списке
     @Getter
+    @ToString.Exclude
     private List<BankOffice> offices = new ArrayList<>();
 
 

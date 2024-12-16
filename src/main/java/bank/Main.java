@@ -26,7 +26,7 @@ public class Main {
         }
 
         // Создаем пользователей
-        User user = new User("U001", "Иванов Иван", new Date(), "ИП Иванов", 6000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
+        User user = new User("U001", "Иванов Иван", new Date(), "ИП Иванов", 60000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
 
         // Создаем офисы и банкоматы для каждого банка
         for (Bank bank : banks) {
@@ -49,6 +49,36 @@ public class Main {
                         new ArrayList<>()
                 );
                 offices.add(office);
+
+                // Добавление сотрудников в офис
+                for (int empNum = 1; empNum <= 5; empNum++) { // Например, 5 сотрудников
+                    // Генерация случайной даты рождения
+                    Random random = new Random();
+                    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                    int year = 1970 + random.nextInt(currentYear - 1970 + 1); // Случайный год от 1970 до текущего года
+                    int month = 0;//random.nextInt(12); // Случайный месяц от 0 до 11
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year, month, 1);
+                    int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // Максимальное количество дней в месяце
+                    int day = 1 + random.nextInt(maxDay); // Случайный день месяца
+
+                    // Установка даты рождения
+                    calendar.set(year, month, day);
+                    Date birthDate = calendar.getTime();
+
+                    Employee employee = new Employee(
+                            "E" + empNum,
+                            "Сотрудник " + empNum,
+                            birthDate,
+                            "Менеджер", // Должность
+                            bank, // Банк, в котором работает сотрудник
+                            false, // Работает ли удаленно
+                            office, // Привязка сотрудника к офису
+                            empNum % 2 == 0, // Пусть только четные сотрудники могут выдавать кредиты
+                            40000.00 // Зарплата сотрудника
+                    );
+                    office.getEmployeeList().add(employee);
+                }
 
                 // Создаем банкоматы для этого офиса
                 for (int atmNum = 1; atmNum <= 3; atmNum++) { // Пример: 5 банкоматов

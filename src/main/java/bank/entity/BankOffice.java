@@ -1,9 +1,6 @@
 package bank.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +22,13 @@ public class BankOffice {
     private double amountOfMoney; // Кол-во денег в офисе
     private double rentCost; // Стоимость аренды офисного помещения
 
+    @ToString.Exclude
     private List<BankAtm> atmList = new ArrayList<>(); // Список банкоматов
 
 
     // Ломбок с аннотацией @Data автоматически создает геттер
     @Getter
+    @ToString.Exclude
     private List<Employee> employeeList = new ArrayList<>();
 
 

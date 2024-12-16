@@ -14,6 +14,7 @@ public class BankAtm {
     private String name; // Имя банкомата
     private String address; // Адрес, совпадающий с адресом банковского офиса
     private String status = "работает"; // Статус (по умолчанию работает)
+    @ToString.Exclude // Исключаем ссылку на банк
     private Bank bank; // Банк, которому принадлежит банкомат
     private String location; // Расположение банкомата (адрес офисов банка)
     private String servicingEmployee; // Обслуживающий сотрудник

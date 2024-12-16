@@ -38,7 +38,7 @@ public class CreditService {
         Employee selectedEmployee = selectEmployee(selectedOffice);
 
         // Проверка кредитного рейтинга клиента
-        if (user.getCreditRating() < 5000 && selectedBank.getRating() > 50) {
+        if (!user.isEligibleForCredit(5000) && selectedBank.getRating() > 50) {
             throw new LowCreditRatingException("Клиенту отказано в кредите из-за низкого кредитного рейтинга.");
         }
 

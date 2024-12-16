@@ -1,5 +1,6 @@
 package bank.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,34 +31,25 @@ public class User {
     private List<PaymentAccount> paymentAccounts = new ArrayList<>(); // Инициализация списка платёжных счетов
     private int creditRating; // Кредитный рейтинг
 
-    // Метод для генерации рандомного месячного дохода (от 0 до 10 000)
-    private double generateMonthlyIncome() {
-        Random rand = new Random();
-        return rand.nextDouble() * 10000; // Генерация случайного числа в диапазоне 0 - 10 000
+    // Метод для вычисления кредитного рейтинга
+    public void calculateCreditRating() {
+        int age = calculateAge(); // Возраст пользователя
+
+        // Расчет кредитного рейтинга на основе зарплаты и возраста
+        creditRating = 1000 + (int) ((monthlyIncome / 1000) * 200) + ((age - 18) * 10);
     }
 
-    // Метод для расчета кредитного рейтинга
-    private int calculateCreditRating() {
-        if (monthlyIncome < 1000) {
-            return 100;
-        } else if (monthlyIncome < 2000) {
-            return 200;
-        } else if (monthlyIncome < 3000) {
-            return 300;
-        } else if (monthlyIncome < 4000) {
-            return 400;
-        } else if (monthlyIncome < 5000) {
-            return 500;
-        } else if (monthlyIncome < 6000) {
-            return 600;
-        } else if (monthlyIncome < 7000) {
-            return 700;
-        } else if (monthlyIncome < 8000) {
-            return 800;
-        } else if (monthlyIncome < 9000) {
-            return 900;
-        } else {
-            return 1000;
-        }
+    // Метод для вычисления возраста пользователя
+    private int calculateAge() {
+        int currentYear = LocalDate.now().getYear(); // Получаем текущий год
+        int birthYear = birthDate.getYear() + 1900;  // Преобразование года из Date (т.к. Date.getYear() возвращает год - 1900)
+        return currentYear - birthYear;
+    }
+
+    // Метод для проверки, подходит ли пользователь для получения кредита
+    public boolean isEligibleForCredit(double requiredMonthlyIncome) {
+        // Если кредитный рейтинг больше или равен 5000, то пользователь может получить кредит
+        calculateCreditRating();
+        return creditRating >= requiredMonthlyIncome;
     }
 }
