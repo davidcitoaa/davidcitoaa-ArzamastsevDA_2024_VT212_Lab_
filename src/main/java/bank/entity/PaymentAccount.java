@@ -2,10 +2,11 @@ package bank.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor // Генерирует конструктор со всеми параметрами
 @ToString
 public class PaymentAccount {
     private String id; // Идентификатор платёжного счета

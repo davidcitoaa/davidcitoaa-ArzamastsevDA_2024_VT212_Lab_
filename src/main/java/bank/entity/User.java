@@ -11,8 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString
-@Data
+@Data // Создает геттеры и сеттеры для всех полей + toString и другие
 @NoArgsConstructor // Генерирует конструктор без параметров
 @AllArgsConstructor // Генерирует конструктор со всеми параметрами
 public class User {
@@ -36,7 +35,7 @@ public class User {
         int age = calculateAge(); // Возраст пользователя
 
         // Расчет кредитного рейтинга на основе зарплаты и возраста
-        creditRating = 1000 + (int) ((monthlyIncome / 1000) * 200) + ((age - 18) * 10);
+        creditRating = 1000 + (int) ((monthlyIncome / 1000) * 200) + ((age) * 10);
     }
 
     // Метод для вычисления возраста пользователя
@@ -52,4 +51,10 @@ public class User {
         calculateCreditRating();
         return creditRating >= requiredMonthlyIncome;
     }
+
+    public boolean isClientOfBank(Bank bank) {
+        // Проверяем, есть ли у пользователя счета в данном банке
+        return paymentAccounts.stream().anyMatch(account -> account.getBank().equals(bank));
+    }
+
 }

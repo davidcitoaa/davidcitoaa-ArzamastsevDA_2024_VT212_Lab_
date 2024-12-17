@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 
 import lombok.ToString;
 
-@ToString
-@Data // Создает геттеры и сеттеры для всех полей + toString, equals, hashCode и другие
+@Data // Создает геттеры и сеттеры для всех полей + toString и другие
 @NoArgsConstructor // Генерирует конструктор без параметров
 @AllArgsConstructor // Генерирует конструктор со всеми параметрами
 public class Bank {
@@ -45,6 +44,18 @@ public class Bank {
     public void setOffices(List<BankOffice> offices) {
         this.offices = offices;
         this.officeCount = offices.size(); // Обновляем количество офисов
+
+        // Подсчитываем общее количество сотрудников
+        int totalEmployees = offices.stream()
+                .mapToInt(office -> office.getEmployeeList().size())
+                .sum();
+        this.employeeCount = totalEmployees; // Обновляем общее количество сотрудников в банке
+
+        // Подсчитываем общее количество ATM
+        int totalAtms = offices.stream()
+                .mapToInt(office -> office.getAtmList().size())
+                .sum();
+        this.atmCount = totalAtms; // Обновляем общее количество ATM в банке
     }
 
     // Генерация рейтинга банка от 0 до 100
@@ -62,6 +73,13 @@ public class Bank {
         double baseRate = random.nextDouble() * 20; // Максимальная ставка 20%
         // Уменьшение ставки в зависимости от рейтинга
         return baseRate * (1 - rating / 100.0);
+    }
+
+    public void addClient(User user) {
+        // Проверяем, является ли пользователь клиентом
+        if (!user.isClientOfBank(this)) {
+            this.clientCount++; // Увеличиваем счетчик клиентов
+        }
     }
 
 }

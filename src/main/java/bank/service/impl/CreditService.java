@@ -2,6 +2,7 @@ package bank.service.impl;
 
 import bank.entity.*;
 import bank.exception.*;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -10,8 +11,8 @@ public class CreditService {
     /**
      * Метод для запроса кредита клиентом.
      *
-     * @param user          Клиент, запрашивающий кредит.
-     * @param banks         Список доступных банков.
+     * @param user            Клиент, запрашивающий кредит.
+     * @param banks           Список доступных банков.
      * @param requestedAmount Сумма, которую клиент хочет получить в кредит.
      * @throws CreditRequestException Если возникают ошибки при получении кредита.
      */
@@ -29,6 +30,13 @@ public class CreditService {
             if (officeComparison != 0) return officeComparison;
             return Integer.compare(b1.getEmployeeCount(), b2.getEmployeeCount());
         });
+
+        // Если клиент еще не является клиентом банка, добавляем его
+        if (!user.isClientOfBank(selectedBank)) {
+            selectedBank.addClient(user); // Добавляем клиента в банк
+            System.out.println("Клиент " + user.getFullName() + " добавлен в список клиентов банка " + selectedBank.getName());
+        }
+
 
         // Проверка наличия офисов в выбранном банке
         List<BankOffice> bankOffices = selectedBank.getOffices();

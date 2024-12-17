@@ -5,8 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@ToString
-@Data // Создает геттеры, сеттеры, toString, equals, hashCode и другие
+@Data // Создает геттеры и сеттеры для всех полей + toString и другие
 @NoArgsConstructor // Генерирует конструктор без параметров
 @AllArgsConstructor // Генерирует конструктор со всеми параметрами
 public class BankAtm {

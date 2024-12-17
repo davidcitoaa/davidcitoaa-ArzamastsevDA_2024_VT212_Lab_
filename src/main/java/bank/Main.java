@@ -4,6 +4,7 @@ import bank.entity.*;
 import bank.service.*;
 import bank.service.impl.*;
 import bank.exception.*;
+import bank.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,8 +26,8 @@ public class Main {
             banks.add(bank);
         }
 
-        // Создаем пользователей
-        User user = new User("U001", "Иванов Иван", new Date(), "ИП Иванов", 60000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
+        // Создаем пользователя
+        User user = new User("U001", "Иванов Иван", DateUtils.generateRandomBirthDate(1970, 2000), "ИП Иванов", 60000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
 
         // Создаем офисы и банкоматы для каждого банка
         for (Bank bank : banks) {
@@ -52,20 +53,21 @@ public class Main {
 
                 // Добавление сотрудников в офис
                 for (int empNum = 1; empNum <= 5; empNum++) { // Например, 5 сотрудников
-                    // Генерация случайной даты рождения
-                    Random random = new Random();
-                    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-                    int year = 1970 + random.nextInt(currentYear - 1970 + 1); // Случайный год от 1970 до текущего года
-                    int month = 0;//random.nextInt(12); // Случайный месяц от 0 до 11
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(year, month, 1);
-                    int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // Максимальное количество дней в месяце
-                    int day = 1 + random.nextInt(maxDay); // Случайный день месяца
+//                    // Генерация случайной даты рождения
+//                    Random random = new Random();
+//                    int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+//                    int year = 1970 + random.nextInt(currentYear - 1970 + 1); // Случайный год от 1970 до текущего года
+//                    int month = 0;//random.nextInt(12); // Случайный месяц от 0 до 11
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.set(year, month, 1);
+//                    int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH); // Максимальное количество дней в месяце
+//                    int day = 1 + random.nextInt(maxDay); // Случайный день месяца
+//
+//                    // Установка даты рождения
+//                    calendar.set(year, month, day);
 
-                    // Установка даты рождения
-                    calendar.set(year, month, day);
-                    Date birthDate = calendar.getTime();
-
+//                    Date birthDate = calendar.getTime();
+                    Date birthDate = DateUtils.generateRandomBirthDate(1970, 2000);
                     Employee employee = new Employee(
                             "E" + empNum,
                             "Сотрудник " + empNum,
@@ -92,14 +94,16 @@ public class Main {
                             "Сотрудник " + atmNum,
                             true,
                             true,
-                            100000.00,
+                            1_000_000.00,
                             200.00
                     );
-                    office.getAtmList().add(atm);
+                    office.addAtm(atm); // Добавляем банкомат в офис
                 }
             }
             bank.setOffices(offices); // Устанавливаем офисы в банке
         }
+
+
 
         // Запрашиваем кредит
         try {

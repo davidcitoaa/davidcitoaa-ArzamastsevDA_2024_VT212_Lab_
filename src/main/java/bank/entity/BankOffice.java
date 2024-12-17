@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Data // Генерирует геттеры, сеттеры и другие методы
+@Data // Создает геттеры и сеттеры для всех полей + toString и другие
 @NoArgsConstructor // Конструктор без параметров
 @AllArgsConstructor // Конструктор со всеми параметрами
 public class BankOffice {
@@ -24,6 +24,12 @@ public class BankOffice {
 
     @ToString.Exclude
     private List<BankAtm> atmList = new ArrayList<>(); // Список банкоматов
+
+    public void addAtm(BankAtm atm) {
+        this.getAtmList().add(atm); // Добавляем банкомат в офис
+        this.setAtmCount(this.getAtmList().size()); // Обновляем количество ATM в офисе
+    }
+
 
 
     // Ломбок с аннотацией @Data автоматически создает геттер
