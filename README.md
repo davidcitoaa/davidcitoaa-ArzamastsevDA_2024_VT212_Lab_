@@ -4,6 +4,13 @@
 
 ![{F6F987BA-31F5-4105-BA36-BF9E82FCE22C}](https://github.com/user-attachments/assets/6abebff2-d229-4e77-b4f0-6feea1f6c469)
 
+![изображение](https://github.com/user-attachments/assets/12696fa1-6fb3-47a0-919e-2b2b9dc0ded3)
+
+![изображение](https://github.com/user-attachments/assets/18d97beb-03bd-4010-b945-443bd2bb4e4b)
+
+![изображение](https://github.com/user-attachments/assets/cd1e3a99-9e63-4641-938f-c1fdf3b2c810)
+
+![изображение](https://github.com/user-attachments/assets/821574b7-d214-45e8-99f9-566b10f0f0a2)
 
 ### Описание проекта
 Проект создан в рамках прохождения курса по предмету "Спецификация, архитектура и проектирование программных систем"
