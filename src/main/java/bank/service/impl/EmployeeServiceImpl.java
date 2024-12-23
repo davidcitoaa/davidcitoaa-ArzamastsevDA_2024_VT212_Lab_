@@ -1,41 +1,53 @@
 package bank.service.impl;
 
 import bank.entity.Employee;
+import bank.repository.*;
 import bank.service.EmployeeService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-public class EmployeeServiceImpl {
-    private Employee employee;
+import static bank.util.Utils.getNullPropertyNames;
+import static org.springframework.beans.BeanUtils.copyProperties;
 
+@Slf4j
+@Service
+@AllArgsConstructor
+public class EmployeeServiceImpl implements EmployeeService {
+    public final EmployeeRepository employeeRepository;
+    public final BankRepository bankRepository;
 
-    //Создание нового сотрудника
-    public void create(Employee newEmployee) {
-        this.employee = newEmployee;
+    public Employee createEmployee(Employee employee) {
+        bankRepository.incrementNumberEmployeesByBankId(employee.getBankId());
+        System.out.println(employee);
+        return employeeRepository.save(employee);
     }
 
+    public List<Employee> getAllEmployees() { return employeeRepository.findAll(); }
 
-    //Чтение данных сотрудника
-    public Employee read(String id) {
-        if (this.employee != null && this.employee.getId() == id) {
-            return employee;
-        } else {
-            return null;
+    public Optional<Employee> getEmployee(Long id) { return employeeRepository.findById(id); }
+
+    public Employee updateEmployee(Long id, Employee employeeDetails) {
+        Optional<Employee> Employee = employeeRepository.findById(id);
+
+        if (Employee.isPresent()) {
+            Employee existingIntern = Employee.get();
+            String[] ignore = getNullPropertyNames(existingIntern);
+            copyProperties(employeeDetails, existingIntern, getNullPropertyNames(employeeDetails));
+            System.out.println(Arrays.toString(ignore));
+
+            existingIntern.setId(employeeDetails.getId());
+            return employeeRepository.save(existingIntern);
         }
+
+        return null;
     }
 
+    public void deleteEmployee(Long id) { employeeRepository.deleteById(id); }
 
-    //Обновление данных сотрудника
-    public void update(Employee employee) {
-        if (this.employee != null && this.employee.getId() == employee.getId()) {
-            this.employee = employee;
-        }
-    }
-
-
-    //Удаление сотрудника
-    public void delete(String id) {
-        if (this.employee != null && this.employee.getId() == id) {
-            this.employee = null;
-        }
-    }
+    public void deleteAllEmployees() { employeeRepository.deleteAll(); }
 }

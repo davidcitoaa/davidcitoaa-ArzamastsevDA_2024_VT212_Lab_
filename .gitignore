@@ -12,6 +12,15 @@ target/
 *.iml
 *.ipr
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
 ### Eclipse ###
 .apt_generated
 .classpath

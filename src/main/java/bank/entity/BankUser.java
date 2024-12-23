@@ -12,40 +12,27 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreditAccount {
+public class BankUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
     @Column(nullable = false)
-    Long userId;
-
-    @Column(nullable = false)
-    String bankName;
+    String fullName;
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    Date creditStartDate;
+    Date dateOfBirth;
 
     @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    Date creditEndDate;
+    String workplace;
+
+    Integer monthlyIncome;
 
     @Column(nullable = false)
-    Integer creditMonthlyDuration;
+    String bankUsed;
 
-    @Column(nullable = false)
-    Integer creditAmount;
-
-    @Column(nullable = false)
-    Integer monthlyPayment;
-
-    @Column(nullable = false)
-    Float interestRate;
-
-    @Column(nullable = false)
-    Long employeeId;
-
-    @Column(nullable = false)
+    Long creditAccountId;
     Long paymentAccountId;
+    Integer creditRating;
 }

@@ -1,36 +1,67 @@
 package bank.service.impl;
 
 import bank.entity.BankAtm;
+import bank.repository.*;
 import bank.service.BankAtmService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import static bank.util.Utils.getNullPropertyNames;
+import static org.springframework.beans.BeanUtils.copyProperties;
+
+@Service
+@AllArgsConstructor
 public class BankAtmServiceImpl implements BankAtmService {
-    private BankAtm bankAtm;
+    public final BankAtmRepository bankAtmRepository;
+    public final BankRepository bankRepository;
+    public final BankOfficeRepository bankOfficeRepository;
 
-    //Создание нового банкомата
-    public void create(BankAtm newUser) {
-        this.bankAtm = newUser;
+    public BankAtm createBankAtm(BankAtm atm) {
+        Long bankId = atm.getBankId();
+        Long bankOfficeId = atm.getBankOfficeId();
+
+        atm.setTotalMoney(bankRepository.getTotalMoneyByBankId(bankId));
+        atm.setAddress(bankOfficeRepository.getAddressByOfficeId(bankOfficeId));
+
+        bankRepository.incrementNumberAtmsByBankId(bankId);
+        bankOfficeRepository.incrementNumberAtmsByOfficeId(bankOfficeId);
+
+        return bankAtmRepository.save(atm);
     }
 
-    //Чтение данных банкомата
-    public BankAtm read(String id) {
-        if (this.bankAtm != null && this.bankAtm.getId() == id) {
-            return bankAtm;
-        } else {
-            return null;
-        }
+    public List<BankAtm> getAllBankAtms() {
+        return bankAtmRepository.findAll();
     }
 
-    //Обновление данных банкомата
-    public void update(BankAtm newUser) {
-        if (this.bankAtm != null && this.bankAtm.getId() == newUser.getId()) {
-            this.bankAtm = newUser;
-        }
+    public Optional<BankAtm> getBankAtm(Long id) {
+        return bankAtmRepository.findById(id);
     }
 
-    //Удаление банкомата
-    public void delete(String id) {
-        if (this.bankAtm != null && this.bankAtm.getId() == id) {
-            this.bankAtm = null;
+    public BankAtm updateBankAtm(Long id, BankAtm atmDetail) {
+        Optional<BankAtm> bankAtm = bankAtmRepository.findById(id);
+
+        if (bankAtm.isPresent()) {
+            BankAtm existingIntern = bankAtm.get();
+            String[] ignore = getNullPropertyNames(existingIntern);
+            copyProperties(atmDetail, existingIntern, getNullPropertyNames(atmDetail));
+            System.out.println(Arrays.toString(ignore));
+
+            existingIntern.setId(atmDetail.getId());
+            return bankAtmRepository.save(existingIntern);
         }
+
+        return null;
+    }
+
+    public void deleteBankAtm(Long id) {
+        bankAtmRepository.deleteById(id);
+    }
+
+    public void deleteAllBanksAtms() {
+        bankAtmRepository.deleteAll();
     }
 }

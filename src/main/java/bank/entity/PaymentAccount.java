@@ -1,16 +1,27 @@
 package bank.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
-@Getter
-@AllArgsConstructor // Генерирует конструктор со всеми параметрами
-@ToString
+import jakarta.persistence.*;
+
+@Entity
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaymentAccount {
-    private String id; // Идентификатор платёжного счета
-    private User user; // Пользователь, за которым закреплен этот платежный счет
-    private Bank bank; // Банк, в котором открыт этот счет
-    private double balance = 0.0; // Начальный баланс по умолчанию 0
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
+
+    @Column(nullable = false)
+    Long userId;
+
+    @Column(nullable = false)
+    String bankName;
+
+    @Column(nullable = false)
+    Integer currentAmount;
 }

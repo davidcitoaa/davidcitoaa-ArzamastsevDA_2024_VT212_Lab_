@@ -1,85 +1,28 @@
 package bank.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-import lombok.ToString;
+import jakarta.persistence.*;
 
-@Data // Создает геттеры и сеттеры для всех полей + toString и другие
-@NoArgsConstructor // Генерирует конструктор без параметров
-@AllArgsConstructor // Генерирует конструктор со всеми параметрами
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+@Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Bank {
-    private String id; // Идентификатор банка
-    private String name; // Имя банка
-    private int officeCount; // Кол-во офисов
-    private int atmCount; // Кол-во банкоматов
-    private int employeeCount; // Кол-во сотрудников
-    private int clientCount; // Кол-во клиентов
-    private int rating; // Рейтинг банка
-    private double totalMoney; // Всего денег в банке
-    private double interestRate; // Процентная ставка
-
-    private static final Random random = new Random();
-
-    // Храним офисы в списке
-    @Getter
-    @ToString.Exclude
-    private List<BankOffice> offices = new ArrayList<>();
-
-
-    public Bank(String id, String name) {
-        this.id = id;
-        this.name = name;
-        this.rating = generateRating();
-        this.totalMoney = generateTotalMoney();
-        this.interestRate = generateInterestRate(rating);
-    }
-
-    // Методы для работы с офисами
-    public void setOffices(List<BankOffice> offices) {
-        this.offices = offices;
-        this.officeCount = offices.size(); // Обновляем количество офисов
-
-        // Подсчитываем общее количество сотрудников
-        int totalEmployees = offices.stream()
-                .mapToInt(office -> office.getEmployeeList().size())
-                .sum();
-        this.employeeCount = totalEmployees; // Обновляем общее количество сотрудников в банке
-
-        // Подсчитываем общее количество ATM
-        int totalAtms = offices.stream()
-                .mapToInt(office -> office.getAtmList().size())
-                .sum();
-        this.atmCount = totalAtms; // Обновляем общее количество ATM в банке
-    }
-
-    // Генерация рейтинга банка от 0 до 100
-    private int generateRating() {
-        return random.nextInt(101);
-    }
-
-    // Генерация суммы денег в банке от 0 до 1,000,000
-    private double generateTotalMoney() {
-        return random.nextDouble() * 1_000_000;
-    }
-
-    // Генерация процентной ставки в зависимости от рейтинга
-    private double generateInterestRate(int rating) {
-        double baseRate = random.nextDouble() * 20; // Максимальная ставка 20%
-        // Уменьшение ставки в зависимости от рейтинга
-        return baseRate * (1 - rating / 100.0);
-    }
-
-    public void addClient(User user) {
-        // Проверяем, является ли пользователь клиентом
-        if (!user.isClientOfBank(this)) {
-            this.clientCount++; // Увеличиваем счетчик клиентов
-        }
-    }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
+    @Column(nullable = false)
+    String name;
+    Integer numberOffices;
+    Integer numberAtms;
+    Integer numberEmployees;
+    Integer numberUsers;
+    Integer bankRating;
+    Integer totalMoney;
+    Float interestRate;
 }

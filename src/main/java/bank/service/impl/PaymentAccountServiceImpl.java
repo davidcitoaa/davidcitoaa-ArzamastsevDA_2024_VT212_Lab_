@@ -1,38 +1,67 @@
 package bank.service.impl;
 
-import bank.entity.PaymentAccount;
+import bank.entity.*;
+import bank.repository.*;
 import bank.service.PaymentAccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class PaymentAccountServiceImpl {
-    private PaymentAccount paymentAccount;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
+import static bank.util.Utils.getNullPropertyNames;
+import static org.springframework.beans.BeanUtils.copyProperties;
 
-    //Создание нового платежного счета
-    public void create(PaymentAccount newPaymentAccount) {
-        this.paymentAccount = newPaymentAccount;
+@Service
+public class PaymentAccountServiceImpl implements PaymentAccountService {
+    public final PaymentAccountRepository paymentAccountRepository;
+    public final BankUserRepository bankUserRepository;
+
+    @Autowired
+    public PaymentAccountServiceImpl(PaymentAccountRepository paymentAccountRepository, BankUserRepository bankUserRepository) {
+        this.paymentAccountRepository = paymentAccountRepository;
+        this.bankUserRepository = bankUserRepository;
     }
 
-    //Чтение данных платежного счета.
-    public PaymentAccount read(String id) {
-        if (this.paymentAccount != null && this.paymentAccount.getId() == id) {
-            return paymentAccount;
-        } else {
-            return null;
-        }
+    public PaymentAccount createPaymentAccount(PaymentAccount paymentAccount) {
+        paymentAccount.setCurrentAmount(0);
+
+        PaymentAccount pa = paymentAccountRepository.save(paymentAccount);
+        bankUserRepository.setPaymentAccountIdByUserId(pa.getId(), pa.getUserId());
+
+        return pa;
     }
 
-    //Обновление данных платежного счета.
-
-    public void update(PaymentAccount paymentAccount) {
-        if (this.paymentAccount != null && this.paymentAccount.getId() == paymentAccount.getId()) {
-            this.paymentAccount = paymentAccount;
-        }
+    public List<PaymentAccount> getAllPaymentAccounts() {
+        return paymentAccountRepository.findAll();
     }
 
-    //Удаление платежного счета.
-    public void delete(String id) {
-        if (this.paymentAccount != null && this.paymentAccount.getId() == id) {
-            this.paymentAccount = null;
+    public Optional<PaymentAccount> getPaymentAccount(Long id) {
+        return paymentAccountRepository.findById(id);
+    }
+
+    public PaymentAccount updatePaymentAccount(Long id, PaymentAccount PaymentAccDetail) {
+        Optional<PaymentAccount> PaymentAccount = paymentAccountRepository.findById(id);
+
+        if (PaymentAccount.isPresent()) {
+            PaymentAccount existingIntern = PaymentAccount.get();
+            String[] ignore = getNullPropertyNames(existingIntern);
+            copyProperties(PaymentAccDetail, existingIntern, getNullPropertyNames(PaymentAccDetail));
+            System.out.println(Arrays.toString(ignore));
+
+            existingIntern.setId(PaymentAccDetail.getId());
+            return paymentAccountRepository.save(existingIntern);
         }
+
+        return null;
+    }
+
+    public void deletePaymentAccount(Long id) {
+        paymentAccountRepository.deleteById(id);
+    }
+
+    public void deleteAllPaymentAccounts() {
+        paymentAccountRepository.deleteAll();
     }
 }

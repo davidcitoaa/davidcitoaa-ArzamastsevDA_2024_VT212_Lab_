@@ -1,23 +1,44 @@
 package bank.entity;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import jakarta.persistence.*;
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-@Getter
-@AllArgsConstructor // Генерирует конструктор со всеми параметрами
-@ToString
+@Entity
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Employee {
-    private String id; // Идентификатор сотрудника
-    private String fullName; // ФИО сотрудника
-    private Date birthDate; // Дата рождения
-    private String position; // Должность
-    private Bank bank; // Банк, в котором работает
-    private boolean worksRemotely; // Работает ли в офисе или удаленно
-    private BankOffice bankOffice; // Банковский офис, в котором работает (может быть null)
-    private boolean canIssueCredits; // Может ли выдавать кредиты
-    private double salary; // Размер зарплаты
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
+
+    @Column(nullable = false)
+    String fullName;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    Date dateOfBirth;
+
+    @Column(nullable = false)
+    String post;
+
+    @Column(nullable = false)
+    Long bankId;
+
+    @Column(nullable = false)
+    Boolean officeWorkFormat;
+
+    @Column(nullable = false)
+    Long bankOfficeId;
+
+    @Column(nullable = false)
+    Boolean creditServices;
+
+    @Column(nullable = false)
+    Integer salary;
 }
